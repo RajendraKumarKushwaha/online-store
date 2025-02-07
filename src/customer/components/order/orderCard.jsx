@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 export function OrderCard() {
     const navigate = useNavigate();
     return (
-        <div onClick={()=>navigate(`/account/order/{5}`)} className="p-5 shadow-md shadow-black hover:shadow-2xl">
+        <div onClick={()=>navigate(`/account/order/${5}`)} className="p-5 shadow-md shadow-black hover:shadow-2xl">
             <Grid container spacing={2} sx={{ justifyContent: "space-between" }}>
 
                 <Grid item xs={6}>
