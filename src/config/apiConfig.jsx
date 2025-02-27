@@ -1,6 +1,6 @@
 import axios from "axios"
 
-export const API_BASE_URL = "http://localhost:5000"
+export const API_BASE_URL = "https://online-store-api-neon.vercel.app"
 
 const jwt = localStorage.getItem("jwt");
 
