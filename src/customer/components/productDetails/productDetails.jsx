@@ -2,14 +2,17 @@
 
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { StarIcon } from '@heroicons/react/20/solid'
 import { Radio, RadioGroup } from '@headlessui/react'
 import { Box, Button, Grid, LinearProgress, Rating } from '@mui/material'
 import { ProductReviewCard } from './productRevewCard'
 import { HomeSectionCard } from '../homeCarousel/homeSectionCard'
 import { mens_kurta } from '../../../Data/mensKurta'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { findProductsById } from '../../../State/product/Action'
+import { addItemToCart } from '../../../State/Cart/Action'
 
 const product = {
     name: 'Basic Tee 6-Pack',
@@ -43,14 +46,11 @@ const product = {
         { name: 'Black', class: 'bg-gray-900', selectedClass: 'ring-gray-900' },
     ],
     sizes: [
-        { name: 'XXS', inStock: false },
-        { name: 'XS', inStock: true },
         { name: 'S', inStock: true },
         { name: 'M', inStock: true },
         { name: 'L', inStock: true },
         { name: 'XL', inStock: true },
-        { name: '2XL', inStock: true },
-        { name: '3XL', inStock: true },
+       
     ],
     description:
         'The Basic Tee 6-Pack allows you to fully express your vibrant personality with three grayscale options. Feeling adventurous? Put on a heather gray tee. Want to be a trendsetter? Try our exclusive colorway: "Black". Need to add an extra pop of color to your outfit? Our white tee has you covered.',
@@ -70,14 +70,25 @@ function classNames(...classes) {
 }
 
 export function ProductDetails() {
-    const [selectedColor, setSelectedColor] = useState(product.colors[0])
-    const [selectedSize, setSelectedSize] = useState(product.sizes[2])
+    const [selectedColor, setSelectedColor] = useState("")
+    const [selectedSize, setSelectedSize] = useState("")
     const navigate = useNavigate();
-
+    const params = useParams();
+    const dispatch = useDispatch();
+    const productData = useSelector((store) => store.product);
+   
     const handleAddToCart = () =>{
+        const data = {productId:params.productId, size:selectedSize.name}
+        dispatch(addItemToCart(data))
+        
         navigate("/cart")
 
     }
+
+    useEffect(()=>{
+        dispatch(findProductsById(params.productId))
+
+    },[params.productId])
 
     return (
         <div className="bg-white lg:px-20">
@@ -116,8 +127,8 @@ export function ProductDetails() {
                     <div className="flex flex-col items-center">
                         <div className='overflow-hidden rounded-lg max-w-[15rem] max-h-[15rem]'>
                             <img
-                                alt={product.images[0].alt}
-                                src={product.images[0].src}
+                                alt="logo"
+                                src={productData.product?.imageUrl}
                                 className="hidden size-full rounded-lg object-cover lg:block "
                             />
                         </div>
@@ -134,12 +145,13 @@ export function ProductDetails() {
                         </div>
 
                     </div>
-
+                                
+                                
                     {/* Product info */}
                     <div className="lg:col-span-1 mx-auto max-w-2xl px-4 pb-16 sm:px-6 lg:max-w-7xl lg:px-8 lg:pb-24">
                         <div className="lg:col-span-2">
-                            <p className="text-lg lg:text-xl font-semibold text-gray-900">casuals</p>
-                            <p className='text-lg lg:text-xl text-gray-900 opacity-60 pt-1'>Casual Puff Sleeves Solid Women White Top</p>
+                            <p className="text-lg lg:text-xl font-semibold text-gray-900">{productData.product?.brand}</p>
+                            <p className='text-lg lg:text-xl text-gray-900 opacity-60 pt-1'>{productData.product?.title}</p>
                         </div>
 
                         {/* Options */}
@@ -147,9 +159,9 @@ export function ProductDetails() {
                             <h2 className="sr-only">Product information</h2>
                             <div className='flex space-x-5 items-center text-lg lg:text-xl text-gray-900 mt-6'>
 
-                                <p className='font-semibold'>199</p>
-                                <p className='opacity-50 line-through'>299</p>
-                                <p className='text-green-600 font-semibold'>50% off</p>
+                                <p className='font-semibold'>&#8377;{productData.product?.price}</p>
+                                <p className='opacity-50 line-through'>&#8377;{productData.product?.discountedPrice}</p>
+                                <p className='text-green-600 font-semibold'>{productData.product?.discountedPresent}% off</p>
                             </div>
 
                             {/* Reviews */}

@@ -3,8 +3,12 @@ import './productCard.css';
 import PropTypes from 'prop-types';
 export function ProductCard({product}) {
   const navigate = useNavigate();
+
+  const handleNavigate=()=>{
+    navigate(`/product/${product._id}`)
+  }
     return (
-        <div onClick={()=>navigate("/product/4")} className='productCard w-[13rem] m-3 transition-all cursor-pointer'>
+        <div onClick={handleNavigate} className='productCard w-[13rem] m-3 transition-all cursor-pointer'>
             <div className='h-[20rem]'>
                 <img className='h-full w-full object-cover object-left-top' src={product.imageUrl} alt='' />
 
@@ -17,7 +21,7 @@ export function ProductCard({product}) {
                 <div className='flex items-center space-x-2'>
                       <p className='font-semibold'>&#8377;{product.discountedPrice}</p>
                       <p className='line-through opacity-50'>&#8377;{product.price}</p>
-                      <p className='font-semibold text-green-700'>{product.discountPersent}% off</p>
+                      <p className='font-semibold text-green-700'>{product.discountedPresent}% off</p>
                 </div>
             </div>
         </div>
@@ -25,13 +29,14 @@ export function ProductCard({product}) {
 }
 ProductCard.propTypes = {
     product: PropTypes.shape({
+      _id: PropTypes.string.isRequired,
       imageUrl: PropTypes.string.isRequired,
       brand: PropTypes.string.isRequired,
       title: PropTypes.string.isRequired,
       color: PropTypes.string.isRequired,
       discountedPrice: PropTypes.number.isRequired,
       price: PropTypes.number.isRequired,
-      discountPersent: PropTypes.number.isRequired,
+      discountedPresent: PropTypes.number.isRequired,
       size: PropTypes.arrayOf(
         PropTypes.shape({
           name: PropTypes.string.isRequired,

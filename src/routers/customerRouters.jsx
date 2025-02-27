@@ -8,6 +8,7 @@ import { ProductDetails } from '../customer/components/productDetails/productDet
 import { Checkout } from "../customer/components/checkout/checkout";
 import { Order } from "../customer/components/order/order";
 import { OrderDetails } from "../customer/components/order/orderDetails";
+import { PaymentSuccess } from "../customer/components/payment/payment";
 export function CustomerRoutes() {
     return (
         <div>
@@ -16,6 +17,10 @@ export function CustomerRoutes() {
             </div>
 
             <Routes>
+                <Route path="/login" element={<HomePage />} />
+                <Route path="/register" element={<HomePage />} />
+
+
                 <Route path="/" element={<HomePage />} />
                 <Route path="/cart" element={<Cart />} />
                 <Route path="/:levelOne/:levelTwo/:levelThree" element={<Product />} />
@@ -23,6 +28,8 @@ export function CustomerRoutes() {
                 <Route path="/checkout" element={<Checkout />} />
                 <Route path="/account/order" element={<Order />} />
                 <Route path="/account/order/:orderId" element={<OrderDetails />} />
+                <Route path="/payment/:orderId" element={<PaymentSuccess/>} />  
+                
 
 
             </Routes>
